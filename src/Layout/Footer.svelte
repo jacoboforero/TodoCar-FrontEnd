@@ -9,7 +9,7 @@
 		</div>
 		<div class="column mainColumns">
 			<h1>Contact</h1>
-			<a href="tel:+5617061580" id="phoneNumber">561-706-1580</a>
+			<a href="tel:+5617061580" id="phoneNumber">(561)-706-1580</a>
 		</div>
 		<div class="column mainColumns">
 			<h1>Terms of Service & Privacy Policy</h1>
@@ -60,7 +60,7 @@
 		color: white;
 	}
 
-	#phone_number {
+	#phoneNumber {
 		color: white;
 	}
 </style>
