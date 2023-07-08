@@ -1,8 +1,12 @@
+<script>
+	import { redirect } from '@sveltejs/kit';
+</script>
+
 <header>
-	<div class="logo" />
+	<a href="/"> <div class="logo" /> </a>
 	<nav>
-		<a href="#">About Us</a>
-		<a href="#">Find Talent</a>
+		<a href="/about" class="button" rel="prefetch">About Us</a>
+		<a href="/buyer">Find Talent</a>
 		<a href="#">Do Work</a>
 		<a href="#">Sign In / Join</a>
 		<a href="#">FAQ</a>
