@@ -1,5 +1,6 @@
 <script>
 	import Header from '../../Layout/Header.svelte';
+	let user = 'Jacobo';
 </script>
 
 <Header />
@@ -23,7 +24,11 @@
 
 <div class="banner-section">
 	<div id="banner" />
-	<div id="post-button" />
+	<div id="post-button-square">
+		<p>Hi {user},<br /> Get matched with the right service provider.</p>
+
+		<button id="post-button" />
+	</div>
 </div>
 
 <div class="gigs-showcase" />
@@ -36,7 +41,7 @@
 		justify-content: space-between;
 		background-color: #212324;
 		width: 100%;
-		height: 44px;
+		height: 30px;
 	}
 
 	.category-buttons button {
@@ -52,7 +57,7 @@
 	#dividing-line {
 		background-color: white;
 		width: 100%;
-		height: 2px;
+		height: 1px;
 		background-color: #838181;
 	}
 
@@ -66,17 +71,40 @@
 	}
 
 	.banner-section #banner {
+		display: flex;
 		width: 61%;
 		height: 60%;
 		background-color: #838181;
 		border-radius: 10px;
 	}
 
-	.banner-section #post-button {
-		width: 14%;
-		height: 60%;
+	.banner-section #post-button-square {
+		display: flex;
+		justify-content: center;
+		align-content: space-around;
+		flex-direction: column;
+
+		width: 17%;
+		height: 70%;
 		background-color: black;
 		margin-right: 30px;
 		border-radius: 10px;
+	}
+
+	.banner-section #post-button-square p {
+		color: white;
+		text-align: center;
+		font-size: 15px;
+		margin: 10px;
+	}
+
+	.banner-section #post-button-square #post-button {
+		margin: 10px;
+		width: 50%;
+		height: 14%;
+		background-color: red;
+		border: none;
+		border-radius: 7px;
+		align-self: center;
 	}
 </style>
