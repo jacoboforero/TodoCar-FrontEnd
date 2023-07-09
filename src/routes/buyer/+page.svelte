@@ -1,4 +1,5 @@
 <script>
+	import Footer from '../../Layout/Footer.svelte';
 	import Header from '../../Layout/Header.svelte';
 	let user = 'Jacobo';
 </script>
@@ -32,8 +33,6 @@
 </div>
 
 <div class="gigs-showcase" />
-
-<footer />
 
 <style>
 	.category-buttons {
