@@ -7,9 +7,9 @@
 	<nav>
 		<a href="/about" class="button" rel="prefetch">About Us</a>
 		<a href="/buyer">Find Talent</a>
-		<a href="#">Do Work</a>
-		<a href="#">Sign In / Join</a>
-		<a href="#">FAQ</a>
+		<a href="/seller">Do Work</a>
+		<a href="/login">Sign In / Join</a>
+		<a href="/faq">FAQ</a>
 	</nav>
 	<input class="search-bar" type="search" placeholder="What service are you looking for?" />
 	<select>
