@@ -6,7 +6,8 @@
 		profileImgUrl: 'https://placeimg.com/100/100/people', // placeholder profile image URL
 		username: 'Placeholder User',
 		starRating: 4.5,
-		price: 50
+		price: 50,
+		job_description: 'I will do *sample job* using *sample tools*'
 	};
 </script>
 

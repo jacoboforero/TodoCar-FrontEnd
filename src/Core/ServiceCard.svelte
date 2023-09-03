@@ -38,6 +38,7 @@
 		margin: 10px;
 		text-align: center;
 		box-sizing: border-box;
+		border: none;
 	}
 
 	/* Reset the default margins and set uniform margins */

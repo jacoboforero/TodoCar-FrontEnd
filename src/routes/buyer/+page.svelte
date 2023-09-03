@@ -1,8 +1,32 @@
 <script>
 	import Footer from '../../Layout/Footer.svelte';
 	import Header from '../../Layout/Header.svelte';
+	import ServiceCard from '../../Core/ServiceCard.svelte';
 
 	let user = 'Jacobo';
+	/**
+	 * @type {any[]}
+	 */
+	let providers = [];
+
+	// Implement a loading state
+	let isLoading = true;
+
+	// Simulate loading from a backend
+	setTimeout(() => {
+		isLoading = false;
+		for (let i = 1; i <= 5; i++) {
+			providers.push({
+				imgUrl:
+					'https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/192403028/original/302d5737af69903c1d188acbd81f528c6410aa44.jpg',
+				profileImgUrl: '/expertConsultantPhoto.avif',
+				username: ` User ${i}`,
+				starRating: 4.5,
+				price: 50,
+				job_description: 'I will do *sample job* using *sample tools*'
+			});
+		}
+	}, 2000);
 </script>
 
 <Header />
@@ -22,20 +46,29 @@
 
 <div id="dividing-line" />
 
-<!-- Modify this section to display the banner image dynamically, make it an informational slide show (refer to Fiverr buyer homepage to see inspiration) -->
-
 <div class="banner-section">
 	<div id="banner" />
 	<div id="post-button-square">
-		<p>Hi {user},<br /> Get matched with the right service provider.</p>
+		<p>Hi {user},<br /> Get matched with the right service provider. By posting a request</p>
 
-		<button id="post-button" />
+		<button id="post-button">Post</button>
 	</div>
 </div>
 
-<div class="gigs-showcase">
-	<!-- Add showcase of service cards that may be relevant to the user -->
-</div>
+<h2 id="services-heading">Relevant services</h2>
+
+<!-- Display a loading state -->
+{#if isLoading}
+	<p>Loading...</p>
+{:else}
+	<div class="gigs-showcase">
+		{#each providers as provider}
+			<ServiceCard {provider} />
+		{/each}
+	</div>
+{/if}
+
+<Footer />
 
 <style>
 	.category-buttons {
@@ -54,6 +87,12 @@
 		margin: 0 10px;
 		text-align: center;
 		font-size: 12px;
+		transition: background-color 0.3s ease;
+	}
+
+	.category-buttons button:hover {
+		background-color: #333;
+		cursor: pointer;
 	}
 
 	#dividing-line {
@@ -108,5 +147,22 @@
 		border: none;
 		border-radius: 7px;
 		align-self: center;
+	}
+
+	#post-button {
+		color: black;
+		font-weight: 600;
+	}
+
+	#services-heading {
+		margin-left: 50px;
+		margin-bottom: 0;
+	}
+
+	.gigs-showcase {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 16px;
+		padding: 20px;
 	}
 </style>
