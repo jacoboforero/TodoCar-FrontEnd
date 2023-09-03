@@ -3,7 +3,7 @@
 </script>
 
 <header>
-	<a href="/"> <div class="logo" /> </a>
+	<a href="/testing"> <div class="logo" /> </a>
 	<nav>
 		<a href="/about" class="button" rel="prefetch">About Us</a>
 		<a href="/buyer">Find Talent</a>

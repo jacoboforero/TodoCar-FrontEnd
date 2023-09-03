@@ -1,7 +1,7 @@
 <script>
 	import Footer from '../../Layout/Footer.svelte';
 	import Header from '../../Layout/Header.svelte';
-	import ServiceCard from '../../Buyer/serviceCard.svelte';
+
 	let user = 'Jacobo';
 </script>
 
@@ -34,10 +34,7 @@
 </div>
 
 <div class="gigs-showcase">
-
-<!-- Add showcase of service cards that may be relevant to the user -->
-
-
+	<!-- Add showcase of service cards that may be relevant to the user -->
 </div>
 
 <style>
