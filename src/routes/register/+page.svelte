@@ -1,8 +1,11 @@
 <script>
 	// @ts-nocheck
+
+	//counters for the different form states and steps
+
 	let currentStep = 1;
 	let userType = 2; // 0 = Both, 1 = Buyer, 2 = Seller
-	const totalSteps = 6;
+	const TOTAL_STEPS = 7;
 
 	//types of possible users
 
@@ -12,7 +15,7 @@
 		{ id: 3, name: 'Both', selected: false }
 	];
 
-	// user can pick between exploring the site or finishing their profile
+	// Options for the user to continue to the site or finish the form
 	let continueOptions = [
 		{ id: 1, name: 'Explore', selected: false },
 		{ id: 2, name: 'Finish', selected: false }
@@ -33,21 +36,34 @@
 		{ id: 9, name: 'Car Shipping', selected: false }
 	];
 
-	const toggleSelection = (option) => (option.selected = !option.selected);
+	// for checkboxes: click =  selected <--> not selected
+	const toggleSelection = (options, option, canSelectMultiple) => {
+		if (!canSelectMultiple) {
+			options.forEach((option) => {
+				option.selected = false;
+			});
+		}
 
-	const goToNextStep = () => {
-		if (currentStep < totalSteps) {
+		option.selected = !option.selected;
+	};
+
+	// functions to handle the form navigation
+
+	const nextStep = () => {
+		if (currentStep < TOTAL_STEPS) {
 			currentStep++;
 		}
 	};
 
-	const goToPreviousStep = () => {
+	const previousStep = () => {
 		if (currentStep > 1) {
 			currentStep--;
 		}
 	};
 
-	const isNextDisabled = () => currentStep === totalSteps;
+	// functions to handle the form buttons
+
+	const isNextDisabled = () => currentStep === TOTAL_STEPS;
 	const isPreviousDisabled = () => currentStep === 1;
 
 	const handleProfilePictureUpload = (event) => {
@@ -60,16 +76,11 @@
 	<div id="main-registration-box">
 		<form id="registration-form">
 			{#if currentStep === 1}
-				<div class="username-group">
-					<h3>Your Username</h3>
-					<input placeholder="" />
-				</div>
-
 				<div class="option-boxes">
 					<h3>What kind of user will you be? If unsure, select both (changeable later).</h3>
 					{#each userOptions as option}
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div class="option-box" on:click={() => toggleSelection(option)}>
+						<div class="option-box" on:click={() => toggleSelection(userOptions, option, false)}>
 							<input type="checkbox" bind:checked={option.selected} id={`option-${option.id}`} />
 							<label
 								for={`option-${option.id}`}
@@ -88,7 +99,10 @@
 					<div class="continue-options-boxes">
 						{#each continueOptions as option}
 							<!-- svelte-ignore a11y-click-events-have-key-events -->
-							<div class="option-box" on:click={() => toggleSelection(option)}>
+							<div
+								class="option-box"
+								on:click={() => toggleSelection(continueOptions, option, false)}
+							>
 								<input
 									type="checkbox"
 									bind:checked={option.selected}
@@ -125,10 +139,18 @@
 					</div>
 				</div>
 			{/if}
+			{#if currentStep === 4}
+				<div class="contact-info">
+					<h3>Contact info</h3>
+					<input type="text" placeholder="Email" />
+					<input type="text" placeholder="Phone" />
+					<input type="text" placeholder="Location (address or city)" />
+				</div>
+			{/if}
 			<!-- From here on, the form is different depending on what type of user the person is-->
 
-			<!-- Step 4 for buyer -->
-			{#if currentStep === 4 && (userType === 1 || userType === 0)}
+			<!-- Step 5 for buyer -->
+			{#if currentStep === 5 && (userType === 1 || userType === 0)}
 				<div class="car-amount">
 					<h3>
 						Enter the make, model, and mileage of your primary vehicle. (More can be added later.)
@@ -142,7 +164,7 @@
 				</div>
 			{/if}
 
-			{#if currentStep === 4 && (userType === 2 || userType === 0)}
+			{#if currentStep === 5 && (userType === 2 || userType === 0)}
 				<div class="seller-primary-job">
 					<h3>
 						What is your primary job or occupation?(This will not limit the amount of services you
@@ -157,13 +179,16 @@
 				</div>
 			{/if}
 
-			{#if currentStep === 5 && (userType === 1 || userType === 0)}
+			{#if currentStep === 6 && (userType === 1 || userType === 0)}
 				<div class="interestedIn-services">
 					<h3>Please select at least 3 services that you may be interested in:</h3>
 
 					{#each interestedInServiceOptions as option}
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div class="option-box" on:click={() => toggleSelection(option)}>
+						<div
+							class="option-box"
+							on:click={() => toggleSelection(interestedInServiceOptions, option, true)}
+						>
 							<input type="checkbox" bind:checked={option.selected} id={`option-${option.id}`} />
 							<label
 								for={`option-${option.id}`}
@@ -175,22 +200,20 @@
 					{/each}
 				</div>
 			{/if}
-			{#if currentStep === 6}
+			{#if currentStep === 7}
 				<!-- Last step for now, add any more future steps here -->
 				<div />
 			{/if}
 
-			{#if currentStep < totalSteps}
+			{#if currentStep < TOTAL_STEPS}
 				<div id="form-buttons">
 					{#if currentStep > 1}
-						<button on:click={goToPreviousStep} disabled={!isPreviousDisabled} id="back-button">
+						<button on:click={previousStep} disabled={!isPreviousDisabled} id="back-button">
 							Back</button
 						>
 					{/if}
-					{#if currentStep < totalSteps}
-						<button on:click={goToNextStep} disabled={isNextDisabled()} id="next-button"
-							>Next</button
-						>
+					{#if currentStep < TOTAL_STEPS}
+						<button on:click={nextStep} disabled={isNextDisabled()} id="next-button">Next</button>
 					{/if}
 				</div>
 			{/if}
@@ -208,6 +231,7 @@
 		background: linear-gradient(to bottom, #b91a1a, #016473);
 		margin: 0;
 		padding: 0;
+		text-align: center;
 	}
 
 	#registration-form {
@@ -216,15 +240,23 @@
 		align-items: center;
 	}
 
+	h3 {
+		color: #fff;
+		margin-top: 10px; /* Consistent top margin for titles */
+		margin-bottom: 15px;
+	}
+
 	#main-registration-box {
 		width: 40%;
-		min-height: 80%; /* Use min-height to allow expansion if needed */
-		background: #fff;
+		min-height: 20%; /* Use min-height to allow expansion if needed */
+
+		background: rgba(185, 26, 26, 0.1);
+		box-shadow: 5px 20px 50px #000;
 		border-radius: 10px;
-		padding: 20px;
+		padding: 0px 20px 20px 20px;
 		overflow: auto; /* Add overflow handling */
 		display: flex; /* Make it a flex container */
-		flex-direction: column; /* Stack children vertically */
+		flex-direction: column;
 		align-items: center;
 	}
 	#registration-form {
@@ -232,18 +264,23 @@
 		height: 100%;
 	}
 
-	.username-group,
 	.profile-upload {
 		text-align: center;
 		margin-top: 30px;
 	}
 	.continue-options {
 		text-align: center;
-		margin-top: 50px;
+		margin-top: 20px;
 	}
 
-	.username-group input,
 	.name-inputs input[type='text'] {
+		width: 80%;
+		height: 40px;
+		margin-top: 10px;
+		padding: 5px;
+	}
+
+	.contact-info input[type='text'] {
 		width: 80%;
 		height: 40px;
 		margin-top: 10px;
@@ -384,14 +421,14 @@
 
 	.services-custom-checkbox {
 		box-sizing: border-box;
-		width: 150px; /* Adjusted for 3 per row */
-		height: 90px; /* Adjusted for a more square appearance */
+		width: 150px;
+		height: 90px;
 		border: 1px solid #555;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		text-align: center;
-		margin: 8px; /* Added margin for spacing */
+		margin: 8px;
 		transition: background-color 0.3s;
 		border-radius: 20px;
 		background-color: #fefefe;

@@ -1,7 +1,12 @@
 <script>
+	import Header from '../../Layout/Header.svelte';
 </script>
 
-<body>
+<div class="header-fixed">
+	<Header />
+</div>
+
+<div class="main_container">
 	<div class="container">
 		<div class="google-signin">
 			<button class="google-signin-btn">
@@ -13,7 +18,7 @@
 		<div class="divider">OR</div>
 
 		<div class="auth-forms">
-			<div class="main">
+			<div class="signup_login_section">
 				<input type="checkbox" id="chk" aria-hidden="true" />
 
 				<div class="signup">
@@ -22,7 +27,7 @@
 						<input type="text" name="txt" placeholder="User name" />
 						<input type="email" name="email" placeholder="Email" />
 						<input type="password" name="pswd" placeholder="Password" />
-						<button>Sign up</button>
+						<a href="/register"><button>Sign up</button></a>
 					</form>
 				</div>
 
@@ -37,10 +42,17 @@
 			</div>
 		</div>
 	</div>
-</body>
+</div>
 
 <style>
-	body {
+	.header-fixed {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 100;
+	}
+	.main_container {
 		margin: 0;
 		padding: 0;
 		display: flex;
@@ -51,12 +63,12 @@
 		background: linear-gradient(to bottom, #b91a1a, #016473);
 	}
 
-	.main {
+	.signup_login_section {
 		width: 350px;
 		height: 500px;
-		background: #fff; /* Changed for a cleaner look */
+		background: #444343;
 		overflow: hidden;
-		background: url('your-image-url') no-repeat center/cover; /* Replace with your image URL */
+		background: url('your-image-url') no-repeat center/cover;
 		border-radius: 10px;
 		box-shadow: 5px 20px 50px #000;
 	}
@@ -73,7 +85,7 @@
 	}
 
 	label {
-		color: #f3f3f3; /* Deep red color for titles */
+		color: #f3f3f3;
 		font-size: 2.3em;
 		justify-content: center;
 		display: flex;
@@ -86,7 +98,7 @@
 	input {
 		width: 60%;
 		height: 20px;
-		background: #f0f0f0; /* Lighter shade for input fields */
+		background: #f0f0f0;
 		justify-content: center;
 		display: flex;
 		margin: 20px auto;
@@ -103,7 +115,7 @@
 		justify-content: center;
 		display: block;
 		color: #fff;
-		background: #016473; /* Teal color for buttons */
+		background: #016473;
 		font-size: 1em;
 		font-weight: bold;
 		margin-top: 20px;
@@ -115,28 +127,33 @@
 	}
 
 	button:hover {
-		background: #014d59; /* Slightly darker teal on hover */
+		background: #014d59;
 	}
 
 	.login {
 		height: 460px;
-		background: #f8f8f8; /* Light grey for the login form background */
+		background: #f8f8f8;
 		border-radius: 60% / 10%;
 		transform: translateY(-180px);
 		transition: 0.8s ease-in-out;
 	}
 
 	.login label {
-		color: #b91a1a; /* Deep red for login title */
+		color: #b91a1a;
 		transform: scale(0.6);
 	}
 
 	#chk:checked ~ .login {
-		transform: translateY(-500px);
+		transform: translateY(-420px);
 	}
 
 	#chk:checked ~ .login label {
 		transform: scale(1);
+		margin-top: 30px;
+	}
+
+	#chk:checked ~ .login form {
+		padding-top: 0.01px;
 	}
 
 	#chk:checked ~ .signup label {
@@ -147,7 +164,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 20px; /* Spacing between elements */
+		gap: 20px;
 	}
 
 	.google-signin-btn {
