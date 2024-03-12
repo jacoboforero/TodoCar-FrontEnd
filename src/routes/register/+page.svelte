@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	let currentStep = 4;
+	let currentStep = 1;
 	let userType = 2; // 0 = Both, 1 = Buyer, 2 = Seller
 	const totalSteps = 6;
 
@@ -37,11 +37,18 @@
 
 	const goToNextStep = () => {
 		if (currentStep < totalSteps) {
-			currentStep += 1;
+			currentStep++;
+		}
+	};
+
+	const goToPreviousStep = () => {
+		if (currentStep > 1) {
+			currentStep--;
 		}
 	};
 
 	const isNextDisabled = () => currentStep === totalSteps;
+	const isPreviousDisabled = () => currentStep === 1;
 
 	const handleProfilePictureUpload = (event) => {
 		const file = event.target.files[0];
@@ -169,11 +176,23 @@
 				</div>
 			{/if}
 			{#if currentStep === 6}
+				<!-- Last step for now, add any more future steps here -->
 				<div />
 			{/if}
 
 			{#if currentStep < totalSteps}
-				<button on:click={goToNextStep} disabled={isNextDisabled()} id="next-button">Next</button>
+				<div id="form-buttons">
+					{#if currentStep > 1}
+						<button on:click={goToPreviousStep} disabled={!isPreviousDisabled} id="back-button">
+							Back</button
+						>
+					{/if}
+					{#if currentStep < totalSteps}
+						<button on:click={goToNextStep} disabled={isNextDisabled()} id="next-button"
+							>Next</button
+						>
+					{/if}
+				</div>
 			{/if}
 		</form>
 	</div>
@@ -332,6 +351,17 @@
 		margin-bottom: 30px;
 	}
 
+	#back-button {
+		width: 150px;
+		height: 50px;
+		background-color: #b91a1a;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		margin-top: 20px;
+		cursor: pointer;
+		margin-top: 50px;
+	}
 	#next-button {
 		width: 150px;
 		height: 50px;
