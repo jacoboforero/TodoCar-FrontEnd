@@ -4,8 +4,11 @@
 	//counters for the different form states and steps
 
 	let currentStep = 1;
-	let userType = 2; // 0 = Both, 1 = Buyer, 2 = Seller
-	const TOTAL_STEPS = 7;
+	let userType = 2; // 3 = Both, 1 = Buyer, 2 = Seller
+	const TOTAL_STEPS = 8;
+
+	//check if the user clicked explore in step 2
+	let isEndFormEarly = false;
 
 	//types of possible users
 
@@ -47,6 +50,14 @@
 		option.selected = !option.selected;
 	};
 
+	$: if (continueOptions[0]?.selected) {
+		window.location.href = '/buyer'; // Redirect to the homepage or desired page
+	}
+
+	const selectUserType = (type) => {
+		userType = type;
+	};
+
 	// functions to handle the form navigation
 
 	const nextStep = () => {
@@ -62,6 +73,67 @@
 	};
 
 	// functions to handle the form buttons
+
+	const finishForm = async () => {
+		// Collect all form data into an object
+
+		const formData = {
+			userType: userType,
+			profilePicture: null,
+			personalInfo: {
+				firstName: document.querySelector('.first-name-input').value,
+				lastName: document.querySelector('.last-name-input').value
+			},
+			contactInfo: {
+				email: document.querySelector('input[placeholder="Email"]').value,
+				phone: document.querySelector('input[placeholder="Phone"]').value,
+				location: document.querySelector('input[placeholder="Location (address or city)"]').value
+			},
+			vehicleInfo: null,
+			jobInfo: null,
+			selectedServices: interestedInServiceOptions
+				.filter((option) => option.selected)
+				.map((option) => option.id)
+		};
+
+		// Optionally add vehicleInfo and jobInfo based on userType
+
+		if (userType === 1 || userType === 3) {
+			// Buyer or Both
+			formData.vehicleInfo = {
+				make: document.getElementById('vehicle-info-make').value,
+				model: document.getElementById('vehicle-info-model').value,
+				mileage: document.getElementById('vehicle-info-mileage').value
+			};
+		}
+
+		if (userType === 2 || userType === 3) {
+			// Seller or Both
+			formData.jobInfo = {
+				primaryJob: document.querySelector('.seller-primary-job input[type="text"]').value,
+				languages: document.querySelector('.seller-primary-job input[type="text"]').lastElementChild
+					.value // Assuming the last input is for languages
+			};
+		}
+
+		//TODO: send form data to the backend
+
+		let submissionSuccesful = true; // Replace with actual response from the backend
+
+		if (submissionSuccesful) {
+			// Redirect to the appropriate page
+			if (userType === 1 || userType === 3) {
+				// Buyer or Both
+				window.location.href = '/buyer';
+			} else {
+				// Seller
+				window.location.href = '/seller';
+			}
+		} else {
+			// Handle submission error
+			alert('An error occurred while submitting the form. Please try again.');
+		}
+	};
 
 	const isNextDisabled = () => currentStep === TOTAL_STEPS;
 	const isPreviousDisabled = () => currentStep === 1;
@@ -80,7 +152,13 @@
 					<h3>What kind of user will you be? If unsure, select both (changeable later).</h3>
 					{#each userOptions as option}
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div class="option-box" on:click={() => toggleSelection(userOptions, option, false)}>
+						<div
+							class="option-box"
+							on:click={() => {
+								toggleSelection(userOptions, option, false);
+								selectUserType(option.id);
+							}}
+						>
 							<input type="checkbox" bind:checked={option.selected} id={`option-${option.id}`} />
 							<label
 								for={`option-${option.id}`}
@@ -150,7 +228,7 @@
 			<!-- From here on, the form is different depending on what type of user the person is-->
 
 			<!-- Step 5 for buyer -->
-			{#if currentStep === 5 && (userType === 1 || userType === 0)}
+			{#if currentStep === 5 && (userType === 2 || userType === 3)}
 				<div class="car-amount">
 					<h3>
 						Enter the make, model, and mileage of your primary vehicle. (More can be added later.)
@@ -164,7 +242,7 @@
 				</div>
 			{/if}
 
-			{#if currentStep === 5 && (userType === 2 || userType === 0)}
+			{#if currentStep === 6 && (userType === 1 || userType === 3)}
 				<div class="seller-primary-job">
 					<h3>
 						What is your primary job or occupation?(This will not limit the amount of services you
@@ -179,7 +257,7 @@
 				</div>
 			{/if}
 
-			{#if currentStep === 6 && (userType === 1 || userType === 0)}
+			{#if currentStep === 7 && (userType === 1 || userType === 3)}
 				<div class="interestedIn-services">
 					<h3>Please select at least 3 services that you may be interested in:</h3>
 
@@ -200,19 +278,25 @@
 					{/each}
 				</div>
 			{/if}
-			{#if currentStep === 7}
-				<!-- Last step for now, add any more future steps here -->
-				<div />
+			{#if currentStep === 8}
+				<h3>Terms of Service</h3>
+				<p>
+					By clicking "Finish" you agree to our terms of service and privacy policy. You also
+					understand that TodoCar is not responsible for any damages or losses that may occur as a
+					result of using our services.
+				</p>
 			{/if}
 
-			{#if currentStep < TOTAL_STEPS}
+			{#if currentStep <= TOTAL_STEPS}
 				<div id="form-buttons">
 					{#if currentStep > 1}
 						<button on:click={previousStep} disabled={!isPreviousDisabled} id="back-button">
 							Back</button
 						>
 					{/if}
-					{#if currentStep < TOTAL_STEPS}
+					{#if currentStep === TOTAL_STEPS}
+						<button on:click={finishForm} id="next-button">Finish</button>
+					{:else if currentStep < TOTAL_STEPS}
 						<button on:click={nextStep} disabled={isNextDisabled()} id="next-button">Next</button>
 					{/if}
 				</div>
