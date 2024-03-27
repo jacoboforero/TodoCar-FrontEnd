@@ -25,6 +25,25 @@
 
 	let sellerData = getSellerData();
 
+	/**
+	 * @type {any[]}
+	 */
+	let jobs = [];
+
+	let isLoading = true;
+	// Simulate loading from a backend
+	setTimeout(() => {
+		isLoading = false;
+		for (let i = 1; i <= 3; i++) {
+			jobs.push({
+				username: ` User ${i}`,
+				location: `Some place ${i}`,
+				price: i * 3 + 7,
+				job_description: 'my car broke down, need help fixing it'
+			});
+		}
+	}, 2000);
+
 	//reactivity
 
 	let isDescriptionExpanded = false;
@@ -67,7 +86,21 @@
 				</ul>
 			</div>
 		</div>
-		<div id="jobs_section">hello</div>
+		<div id="jobs_section">
+			<h1>Jobs for you</h1>
+			{#if isLoading}
+				<p>Loading...</p>
+			{:else}
+				{#each jobs as job}
+					<div id="box">
+						<h2>{job.username}</h2>
+						<p>{job.job_description}</p>
+						<p>{job.location}</p>
+						<p>${job.price}</p>
+					</div>
+				{/each}
+			{/if}
+		</div>
 	</div>
 	<Footer />
 </main>
@@ -155,13 +188,27 @@
 		margin-bottom: 5px;
 	}
 	#jobs_section {
+		display: flex;
 		width: 65vw;
 		min-height: 62vh;
 		background: #fefefe;
-		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		align-items: center;
+		align-items: start;
+		padding: 20px;
 		border-radius: 10px;
+	}
+
+	#jobs_section #box {
+		display: flex;
+		width: 90%;
+		background: #ffffff;
+		padding: 20px;
+		margin: 10px 0;
+		border-radius: 10px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
 	}
 </style>

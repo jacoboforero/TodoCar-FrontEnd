@@ -44,7 +44,7 @@
 	/* Reset the default margins and set uniform margins */
 	#price,
 	#job_description,
-	#star_rating {
+	.star-rating {
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
